@@ -55,7 +55,8 @@ Type: <type>`,
       format,
       hash,
       size,
-      withLocal
+      withLocal,
+      cidBase
     } = argv
 
     argv.resolve((async () => {
@@ -66,7 +67,7 @@ Type: <type>`,
       })
         .then((stats) => {
           if (hash) {
-            return print(stats.hash)
+            return print(stats.cid.toString(cidBase))
           }
 
           if (size) {
@@ -74,7 +75,7 @@ Type: <type>`,
           }
 
           print(format
-            .replace('<hash>', stats.hash)
+            .replace('<hash>', stats.cid.toString(cidBase))
             .replace('<size>', stats.size)
             .replace('<cumulsize>', stats.cumulativeSize)
             .replace('<childs>', stats.blocks)
