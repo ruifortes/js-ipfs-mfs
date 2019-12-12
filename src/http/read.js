@@ -4,6 +4,7 @@ const Joi = require('@hapi/joi')
 const {
   PassThrough
 } = require('stream')
+const toStream = require('it-to-stream')
 
 const mfsRead = {
   method: 'POST',
@@ -20,11 +21,11 @@ const mfsRead = {
     } = request.query
 
     const responseStream = await new Promise((resolve, reject) => {
-      const stream = ipfs.files.readReadableStream(arg, {
+      const stream = toStream.readable(ipfs.files.read(arg, {
         offset,
         length,
         count
-      })
+      }))
 
       stream.once('data', (chunk) => {
         const passThrough = new PassThrough()
